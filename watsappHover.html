@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    a.watsappWrapper {
+      position: fixed;
+      bottom: 20px;
+      right: 24px;
+      text-decoration: none;
+      overflow: hidden;
+      border-radius: 70px;
+    }
+
+    .watsapp_inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
+      font-size: 1.38rem;
+      z-index: 1;
+      padding: 0px 0px 0px 20px;
+    }
+
+    .watsapp_inner::after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      position: absolute;
+      background-color: #29a71a;
+      border-radius: 70px;
+      z-index: -1;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s ease-in;
+    }
+
+    .watsapp_text {
+      color: transparent;
+    }
+
+    .watsappWrapper:hover .watsapp_inner::after,
+    .watsappWrapper:hover .watsapp_text {
+      transform: scaleX(1);
+      color: #fff;
+    }
+
+    .watsapp_text .watsapp_logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="https://wa.me/9876543210" target="_blank" class="watsappWrapper">
+    <div class="watsapp_inner">
+      <div class="watsapp_text">Watsapp Chat</div>
+      <div class="watsapp_logo">
+        <img src="./whatsapp.png" alt="watsapp logo">
+      </div>
+    </div>
+  </a>
+
+</body>
+
+</html>
