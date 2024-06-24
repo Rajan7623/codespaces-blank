@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    .collection_hover_inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .collection_hover_items {
+      width: 100px;
+      height: 400px;
+      border-radius: 10px;
+      position: relative;
+      transition: width 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 2px solid transparent;
+    }
+
+    .collection_hover_items img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.5s ease, filter 0.5s ease;
+    }
+
+    .collection_vertical_title {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 30px;
+      height: 100%;
+      background: rgb(0 0 0 / 30%);
+      color: white;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      text-align: center;
+      transform: translateY(-50%);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      padding: 10px 0;
+      opacity: 1;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .collection_hover_items:hover .collection_vertical_title {
+      opacity: 0;
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .collection_hover_items:hover {
+      width: 500px;
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      border: 2px solid #171717;
+    }
+
+    .collection_hover_items:hover img {
+      transform: scale(1.01);
+      filter: brightness(0.8);
+    }
+
+    .collection_hover_overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .collection_hover_items:hover .collection_hover_overlay {
+      opacity: 1;
+    }
+
+    .collection_hover_text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .collection_hover_items:hover .collection_hover_text {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .collection_hover_text h1 {
+      margin: 0;
+      font-size: 40px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .collection_hover_text .collection_hover_subtitle {
+      margin: 10px 0 0 0;
+      font-size: 18px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 8px;
+      border-radius: 5px;
+    }
+
+    .collection_hover_text p {
+      margin: 10px 0 0 0;
+      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 6px;
+      border-radius: 5px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .collection_hover_items:hover .collection_hover_text {
+      animation: fadeIn 0.5s ease forwards;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="collection_hover_main_wrapper">
+    <div class="collection_hover_inner">
+      <a href="#" class="collection_hover_items">
+        <div class="collection_vertical_title">Vertical Title 1</div>
+        <div class="collection_hover_overlay"></div>
+        <img src="./images/1.jpg">
+        <div class="collection_hover_text">
+          <h1>Title 1</h1>
+          <div class="collection_hover_subtitle">Subtitle 1</div>
+          <p class="collection_hover_description">Description 1</p>
+        </div>
+      </a>
+      <a href="#" class="collection_hover_items">
+        <div class="collection_vertical_title">Vertical Title 2</div>
+        <div class="collection_hover_overlay"></div>
+        <img src="./images/2.jpg">
+        <div class="collection_hover_text">
+          <h1>Title 2</h1>
+          <div class="collection_hover_subtitle">Subtitle 2</div>
+          <p class="collection_hover_description">Description 2</p>
+        </div>
+      </a>
+      <a href="#" class="collection_hover_items">
+        <div class="collection_vertical_title">Vertical Title 3</div>
+        <div class="collection_hover_overlay"></div>
+        <img src="./images/3.jpg">
+        <div class="collection_hover_text">
+          <h1>Title 3</h1>
+          <div class="collection_hover_subtitle">Subtitle 3</div>
+          <p class="collection_hover_description">Description 3</p>
+        </div>
+      </a>
+      <a href="#" class="collection_hover_items">
+        <div class="collection_vertical_title">Vertical Title 4</div>
+        <div class="collection_hover_overlay"></div>
+        <img src="./images/16.png">
+        <div class="collection_hover_text">
+          <h1>Title 4</h1>
+          <div class="collection_hover_subtitle">Subtitle 4</div>
+          <p class="collection_hover_description">Description 4</p>
+        </div>
+      </a>
+      <a href="#" class="collection_hover_items">
+        <div class="collection_vertical_title">Vertical Title 5</div>
+        <div class="collection_hover_overlay"></div>
+        <img src="./images/4.jpg">
+        <div class="collection_hover_text">
+          <h1>Title 5</h1>
+          <div class="collection_hover_subtitle">Subtitle 5</div>
+          <p class="collection_hover_description">Description 5</p>
+        </div>
+      </a>
+      <a href="#" class="collection_hover_items">
+        <div class="collection_vertical_title">Vertical Title 6</div>
+        <div class="collection_hover_overlay"></div>
+        <img src="./images/5.jpg">
+        <div class="collection_hover_text">
+          <h1>Title 6</h1>
+          <div class="collection_hover_subtitle">Subtitle 6</div>
+          <p class="collection_hover_description">Description 6</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</body>
+
+</html>
