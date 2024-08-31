@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: #eeeeeeeb;
+    }
+
+    body {
+      background-color: #00ad8f;
+    }
+
+    .faq-section {
+      margin-top: 5em;
+    }
+
+    .faq-section h1 {
+      font-size: 2.5em;
+    }
+
+    .faq-heading {
+      text-align: center;
+      margin-bottom: 2em;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 1em;
+    }
+
+    .faq-item {
+      background-color: #fff;
+      border-radius: 0.6em;
+      border: 1px solid #333;
+      margin-bottom: 0.5em;
+      overflow: hidden;
+    }
+
+    .faq-toggle {
+      display: none;
+      /* Hide checkbox */
+    }
+
+    .faq-question {
+      background-color: #efefef;
+      padding: 1em;
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border: none;
+    }
+
+    .faq-answer {
+      height: 0;
+      overflow: hidden;
+      border-top: 1px solid #333;
+      transition: transform 0.3s ease, padding 0.3s ease;
+      padding: 0 1em;
+    }
+
+    .faq-question::after {
+      content: '+';
+      color: #00ad8f;
+      font-size: 2em;
+      line-height: 12px;
+      display: inline-block;
+      transition: transform 0.8s ease;
+    }
+
+    .faq-toggle:checked+.faq-question::after {
+      content: '-';
+      font-size: 2.5em;
+      transform: rotate(180deg);
+      transition: none;
+      margin-top: 8px;
+    }
+
+
+    .faq-toggle:checked~.faq-question~.faq-answer {
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="faq-section">
+    <div class="container">
+      <div class="faq-heading">
+        <h1>Frequently Asked Questions</h1>
+        <p>Here are a few general CSS questions and their answers, hope they serve as a refresher.</p>
+      </div>
+      <div class="faq-container">
+        <!-- FAQ Item 1 -->
+        <div class="faq-item">
+          <input type="checkbox" id="faq1" class="faq-toggle" hidden checked>
+          <label for="faq1" class="faq-question">What's the difference between px, em, and rem?</label>
+          <div class="faq-answer">
+            <p>px is a fixed size, em changes size based on the parent element's font size, and rem is always relative
+              to the document's root font size, making layouts more flexible.</p>
+          </div>
+        </div>
+        <!-- FAQ Item 2 -->
+        <div class="faq-item">
+          <input type="checkbox" id="faq2" class="faq-toggle" hidden>
+          <label for="faq2" class="faq-question">Why use :hover and :focus pseudo-classes?</label>
+          <div class="faq-answer">
+            <p>They let you style elements when users interact with them, like changing a button's color when hovered
+              over, making websites more interactive.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+</html>
