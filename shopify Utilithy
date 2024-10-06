@@ -1,1 +1,4 @@
   {{ 'custom-mw.css' | asset_url | stylesheet_tag: preload: true }}
+
+
+$('cart-drawer').load(location.href + "#CartDrawer");
