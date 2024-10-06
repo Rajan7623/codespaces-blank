@@ -1,0 +1,1238 @@
+<style>
+
+  :root {
+    --product-container-height: 100px;
+    --recommendedProduct-bg-color: lightblue;
+  }
+
+  #recProductsMain {
+    position: relative;
+  }
+
+  #initialRecProductsMain {
+    position: relative;
+  }
+
+  .recommendedContainer {
+    box-sizing: border-box;
+    width: 90%;
+    background: none;
+    margin: 0 auto 10px auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .recommendedContainer[data-active] {
+    height: var(--product-container-height);
+  }
+
+  .sliderButton {
+    position: absolute;
+    border: none;
+    bottom: 45px;
+    z-index: 2;
+    background: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+    background: none;
+    color: black;
+    opacity: 0.6;
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sliderButton[data-active] {
+    display: inline-flex;
+  }
+
+  .sliderButton:not([disabled]):hover {
+    opacity: 1;
+  }
+
+  .sliderButton[disabled]:hover {
+    cursor: not-allowed;
+  }
+
+  .sliderButton.prev {
+    left: -4%;
+  }
+
+  .sliderButton.next {
+    right: -4%;
+
+  }
+
+  .compHeader {
+    display: none;
+    font-weight: bold;
+    z-index: 3;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px;
+    letter-spacing: -0.4px;
+  }
+
+  .compHeader[data-active] {
+    display: block;
+  }
+
+  .recommendedProduct {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--product-container-height);
+    background-color: var(--recommendedProduct-bg-color);
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; 
+  }
+
+  .recommendedProduct[data-active] {
+    display: flex;
+    pointer-events: auto;
+  }
+
+  .recommendedProduct[data-active-in] {
+    display: flex;
+    pointer-events: auto;
+    animation: productSlideIn 0.5s forwards;
+  }
+
+  .recommendedProduct[data-active-out] {
+    display: flex;
+    pointer-events: auto;
+    animation: productSlideOut 0.5s forwards;
+  }
+
+  /*---------------------------------------------------------*/
+
+  .recommendedProduct[data-active-in-reverse] {
+    /* opacity: 1; */
+    display: flex;
+    pointer-events: auto;
+    animation: productSlideInReverse 0.5s forwards;
+  }
+
+  .recommendedProduct[data-active-out-reverse] {
+    /* opacity: 1; */
+    display: flex;
+    pointer-events: auto;
+    animation: productSlideOutReverse 0.5s forwards;
+  }
+
+   @keyframes productSlideIn {
+    from{transform: translateX(100%)}
+    to{transform: translateX(0)}
+  }
+
+  @keyframes productSlideOut {
+    from{transform: translateX(0)}
+    to{transform: translateX(-100%)}
+  }
+
+  /*-----------------------------------------------*/
+
+  @keyframes productSlideInReverse {
+    from{transform: translateX(-100%)}
+    to{transform: translateX(0)}
+  }
+
+  @keyframes productSlideOutReverse {
+    from{transform: translateX(0)}
+    to{transform: translateX(100%)}
+  }
+
+  .imageDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--product-container-height);
+  }
+
+  .imageDiv a {
+    text-decoration: none;
+  }
+
+  .imageDiv a img {
+    padding: 5px;
+  }
+
+  .detailsDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+    padding: 5px 7px 5px 2px;
+    height: var(--product-container-height);
+    overflow: hidden;
+  }
+
+  .detailsDiv a {
+    text-decoration: none;
+    color: inherit;
+    line-height: 1px;
+  }
+
+  .detailsTitle {
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    max-width: 220px;
+    display: inline-block; 
+    transition: color 0.3s;
+  }
+
+  .detailsTitle:hover {
+    text-decoration: underline;
+    color: black;
+  }
+
+  .detailsPrice {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .detailsPrice span {
+    font-size: 12px;
+    color: black;
+    margin-top: -2px;
+  }
+
+  .cartForm {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 100%;
+    overflow-y: hidden;
+  }
+
+
+  .optionsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px;
+    column-gap: 5px;
+    width: 100%;
+  }
+
+  .optionsContainer > select {
+    height: 25px;
+  }
+
+  .optionsContainer > * {
+    flex: 1 1
+  }
+
+  .compThumbnail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .addRecommendedProduct {
+    height: 28px;
+  }
+
+  .product-recommendations-element {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .variantComparePrice {
+    text-decoration: line-through;
+  }
+
+
+</style>
+
+<div id="recProductsMain">
+
+  {% comment %} the following buttons simulate the clicking of the actual slider buttons below {% endcomment %}
+  <div class="compHeader">Complete Your Cart With:</div>
+  <button id="sliderButtonPrev" class="sliderButton prev" data-slider-button="prev" onclick="handleSimulatedSliderButtons(this)">
+    <svg class="sliderButtonSVG" classxmlns="http://www.w3.org/2000/svg" width="16" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline class="sliderButtonSVG" points="16 7 8 15 16 23" />
+    </svg>
+  </button>
+
+  <button id="sliderButtonNext" class="sliderButton next" data-slider-button="next" onclick="handleSimulatedSliderButtons(this)">
+    <svg class="sliderButtonSVG" xmlns="http://www.w3.org/2000/svg" width="16" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline class="sliderButtonSVG" points="0 7 8 15 0 23" />
+    </svg> 
+  </button>
+
+  <div id="recommendedProducts" class="recommendedContainer" data-cart-item-size={{ cart.items | size }} data-cart-item-count={{ cart.item_count }} data-initial-cart-item-count="{{ cart.item_count }}">
+
+    {% assign assignedCartItemCount = cart.item_count %}
+    {% if assignedCartItemCount > 0 %}
+
+      <button class="initialLoadButton" style="display: none;" onclick="handleInitialLoad(this)" data-cart-item-count={{ cart.items | size }} reloaded="true">Temp Button</button>
+      
+      <script id="cart-items-data" data-cart-item-size={{ cart.items | size }} data-cart-item-count={{ cart.item_count }} type="application/json">
+        {{ cart.items | json }}
+      </script>
+     
+    {% endif %}
+
+    <div id="parentDivTemplate" data-product-id="" style="display: none;">
+
+      <button class="sliderButton next" data-slider-button="next" style="display: none" onclick="handleSliderButtons(this)">&#8250;</button>
+      <button class="sliderButton prev" data-slider-button="prev" style="display: none;" onclick="handleSliderButtons(this)">&#8249;</button> 
+    
+      {% comment %} Add logic when simulated click is triggered {% endcomment %}
+      <div class="complementaryProductTemplate">
+        <div class="imageDiv">
+          <a class="compThumbnail" href="#">
+            <img class="imageThumbnail" src="" height="100px">
+          </a>
+        </div>
+        <div class="detailsDiv">
+          <a href="#">
+            <span class="detailsTitle"></span>
+          </a>
+          <div class="detailsPrice">
+            <span class="variantComparePrice"></span>
+            <span class="variantPrice"></span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% comment %} recommended products handling script {% endcomment %}
+<script>
+
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('Document loaded');
+
+    const handleMouseMoveOnce = () => {
+      try {
+
+        const buttonElement = document.querySelector('button.initialLoadButton');
+
+        if (!buttonElement) {
+          return;
+        }
+
+        if (buttonElement.innerHTML.trim() === '') {
+          return;
+        }
+
+        try {
+          handleInitialLoad(buttonElement);
+          console.log('handleMouseMoveOnce ran');
+        } catch (error) {
+          console.error('Error in handleInitialLoad:', error);
+        }
+
+      } catch (error) {
+        console.error('Error in handleMouseMoveOnce:', error);
+      }
+    };
+
+    // Add event listener for mousemove with the { once: true } option
+    window.addEventListener('mousemove', handleMouseMoveOnce, { once: true });
+  });
+
+  // Wait function to pause for a given number of milliseconds
+  const wait = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  };
+
+  // Function to handle the button click logic
+  const handleButtonClick = async (event) => {
+
+    let counter = 0;
+    const interval = 500; // Interval in milliseconds
+    const timeout = 5000; // Maximum wait time in milliseconds
+    const maxAttempts = timeout / interval;
+
+    const initialCartItemCount = document.querySelector('#recommendedProducts').dataset.initialCartItemCount;
+    console.log('tbd initialCartItemCount:', initialCartItemCount);
+
+    while (counter < maxAttempts) {
+      const button = document.querySelector('.initialLoadButton');
+      let currentCartItemCount = document.querySelector('#recommendedProducts').dataset.cartItemCount;
+
+      // if (button && button.getAttribute('reloaded')) {
+      // if (button && (button.getAttribute('reloaded') || initialCartItemCount != currentCartItemCount)) {
+      if (button && initialCartItemCount != currentCartItemCount) {
+        console.log('tbd currentCartItemCount:', currentCartItemCount);
+        button.closest('#recommendedProducts').dataset.initialCartItemCount = currentCartItemCount;
+        button.click();
+        break; // Exit the loop once the button is found and clicked
+      } 
+      else {
+        await wait(interval); // Wait for the specified interval
+        currentCartItemCount = document.querySelector('#recommendedProducts').dataset.cartItemCount;
+        counter++;
+      }
+    }
+
+  };
+
+  // Add event listener to handle clicks, using the `once` option
+  document.addEventListener('click', async (event) => {
+    
+    const blockArray = [
+      'sliderButton',
+      'sliderButtonSVG',
+      'initialLoadButton',
+      'detailsTitle',
+      'imageThumbnail'
+    ];
+
+    if (blockArray.some(className => event.target.classList.contains(className))) {
+      return;
+    }
+
+    // Call the function to handle the button click logic
+    await handleButtonClick(event);
+  });
+
+
+  const handleInitialLoad = async (initialLoadButtonElement) => {
+
+    console.log('handleInitialLoad ran');
+
+    // Retrieve the raw JSON data from the script tag
+    let cartItemsDataScript;
+
+    if(!document.querySelector('#cart-items-data')) {
+      return;
+    }
+    
+    cartItemsDataScript = document.querySelector('#cart-items-data').textContent;
+  
+    // Parse the JSON data safely
+    let cartItems = parseJsonSafely(cartItemsDataScript);
+
+    // Log the result or handle the failure
+    if (cartItems) {
+      console.log('cartItems:', cartItems);
+    } 
+    else {
+      console.warn('Failed to parse cartItems');
+    }
+
+    if (cartItems.length == 0) {
+      console.log('no items in the cart, exiting handleInitialLoad');
+      return;
+    }
+
+    // check recommended products theme customizer settings
+    const enableRecommendedSetting = '{{ section.settings.enable_recommended }}';
+
+    let recommendedProductsSet = [];
+
+    if (enableRecommendedSetting == 'true' || enableRecommendedSetting == 'both') {
+      recommendedProductsSet = await Promise.all(
+        cartItems.map(async (item) => {
+          const fetchComplementary = await fetch(`${window.Shopify.routes.root}recommendations/products.json?product_id=${item.product_id}&limit=4&intent=complementary`);
+
+          let recommendedProducts = await fetchComplementary.json();
+          recommendedProducts = recommendedProducts.products;
+
+          if (recommendedProducts.length > 0) {
+            return { cartItem: item, recommendedProducts };
+          } else {
+            if (enableRecommendedSetting == 'both') {
+              const fetchRelated = await fetch(`${window.Shopify.routes.root}recommendations/products.json?product_id=${item.product_id}&limit=4&intent=related`);
+
+              let recommendedProducts = await fetchRelated.json();
+              recommendedProducts = recommendedProducts.products;
+
+              if (recommendedProducts.length > 0) {
+                return { cartItem: item, recommendedProducts };
+              }
+            }
+          }
+        })
+      );
+    }
+
+    if (recommendedProductsSet.length > 0) {
+      buildRecommendedProductsContainer(recommendedProductsSet);
+    }
+    else {
+      console.log('recommendedProductsSet.length = 0, buildRecommendedProductsContainer didn\'t run')
+    }
+
+    // document.querySelector('#recommendedProducts').dataset.initialCartItemCount = {{ cart.item_count }};
+
+    // remove duplicate products from slider
+    const allSlideProductIdArr = [];
+    const allSlides = document.querySelectorAll('.recommendedProduct');
+    allSlides.forEach((slide) => {
+      const slideProductId = slide.dataset.productId;
+      if(!allSlideProductIdArr.includes(slideProductId)) {
+        allSlideProductIdArr.push(slideProductId);
+      }
+      else {
+        slide.remove();
+      }
+    });
+
+    // const element = initialLoadButtonElement.closest('#recommendedProducts');
+    const element = document.querySelector('#recommendedProducts');
+
+    if (!element) {
+      console.log("no element, exiting handleInitialLoad function");
+      return;
+    }
+
+    const slides = element.querySelectorAll('.recommendedProduct');
+
+    if(slides.length == 0) {
+      console.log('slides count is 0, exiting handleInitialLoad function');
+      return;
+    }
+
+    console.log('slides count:', slides.length);
+
+    // if there's only one slide, then disable prev and next buttons
+    if (slides.length == 1) {
+      document.getElementById('sliderButtonPrev').setAttribute('disabled', true);
+      document.getElementById('sliderButtonNext').setAttribute('disabled', true);
+    }
+
+    element.setAttribute('data-active', '');
+
+    const compProductElement = element.querySelector('.recommendedProduct');
+
+    if(!compProductElement) {
+      console.log('no compProductElement, exiting handleInitialLoad function');
+      return;
+    }
+
+    compProductElement.setAttribute('data-active', '');
+
+    const headerElement = document.querySelector('.compHeader');
+    headerElement.setAttribute('data-active', '');
+
+    document.querySelectorAll('.sliderButton').forEach((button) => {
+      button.setAttribute('data-active', '');
+    })
+
+    // const recProductsCount = compProductElement.dataset.count;
+
+    // console.log('count:', recProductsCount);
+    element.querySelectorAll('.initialLoadButton').forEach((button) => {
+      button.removeAttribute('reloaded');
+    })
+
+    // remove duplicate products from slider
+    const slideProductIdArr = [];
+    slides.forEach((slide) => {
+      const slideProductId = slide.dataset.productId;
+      if (!slideProductIdArr.includes(slideProductId)) {
+        slideProductIdArr.push(slideProductId);
+      }
+      else {
+        slide.remove();
+      }
+    });
+
+  };
+
+  const buildRecommendedProductsContainer = (recommendedProductsSet) => {
+
+    // Get the main container for the slider (move this outside the loop)
+    // const recommendedProducts = document.getElementById('recommendedProducts');
+    const recommendedProducts = document.querySelector('#recommendedProducts');
+
+    // parentDivTemplate
+    const parentDivTemplate = document.getElementById('parentDivTemplate');
+
+    recommendedProductsSet.forEach((recommendedProductSet) => {
+
+      const cartItem = recommendedProductSet.cartItem;
+      const products = recommendedProductSet.recommendedProducts;
+
+      if (products.length == 0) {
+        console.log('products.length = 0, exiting buildRecommendedProductsContainer function');
+        return;
+      }
+
+      // Clone the parent div template
+      const newParentDiv = document.createElement('div');
+
+      // Set the class
+      newParentDiv.className = 'parentDiv';
+
+      // Set the data attribute
+      newParentDiv.setAttribute('data-cart-item-id', cartItem.product_id);
+
+      // Iterate over the recommended products
+      products.forEach((product, index) => {
+
+        // Populate each '.recommendedProduct' div with relevant values
+        // clone '.recommendedProduct' div
+        const recommendedProductDiv = parentDivTemplate.querySelector('.complementaryProductTemplate').cloneNode(true);
+
+        // replace 'complementaryProductTemplate' class in newly created div
+        recommendedProductDiv.classList.replace('complementaryProductTemplate', 'recommendedProduct');
+
+        // add product id attribute
+        recommendedProductDiv.setAttribute('data-product-id', product.id);
+
+        // product thumbnail href
+        recommendedProductDiv.querySelector('.compThumbnail').setAttribute('href', product.url);
+
+        // product variant image if any, otherwise product image
+        if (product.variants[0].featured_image) {
+          if (product.variants[0].featured_image.src) {
+            recommendedProductDiv.querySelector('.imageDiv img').setAttribute('src', product.variants[0].featured_image.src);
+          }
+          else {
+            recommendedProductDiv.querySelector('.imageDiv img').setAttribute('src', product.images[0]);
+          }
+        }
+        else {
+          recommendedProductDiv.querySelector('.imageDiv img').setAttribute('src', product.images[0]);
+        }
+
+        // hyperlink details div
+        recommendedProductDiv.querySelector('.detailsDiv a').setAttribute('href', product.url);
+
+        // add product title
+        recommendedProductDiv.querySelector('.detailsDiv .detailsTitle').innerHTML = product.title;
+
+        // add price
+        if(product.variants.count == 1 && product.variants.options[0] == "Default Title") {
+          if(product.compare_at_price) {
+            recommendedProductDiv.querySelector('.detailsDiv .variantComparePrice').innerHTML = formatMoney(product.compare_at_price, '{{ shop.money_format }}');
+          }
+          recommendedProductDiv.querySelector('.detailsDiv .variantPrice').innerHTML = formatMoney(product.price, '{{ shop.money_format }}');
+        }
+        else {
+          if(product.variants[0].compare_at_price) {
+            recommendedProductDiv.querySelector('.detailsDiv .variantComparePrice').innerHTML = formatMoney(product.variants[0].compare_at_price, '{{ shop.money_format }}');
+          }
+          recommendedProductDiv.querySelector('.detailsDiv .variantPrice').innerHTML = formatMoney(product.variants[0].price, '{{ shop.money_format }}');
+        }
+
+        // Append the cart form
+        const cartForm = generateCartForm(product);
+        recommendedProductDiv.querySelector('.detailsDiv').appendChild(cartForm);        
+        
+        // Insert the newly created div into newParentDiv
+        newParentDiv.appendChild(recommendedProductDiv);
+
+      });
+
+      // Insert newParentDiv as the first child
+      recommendedProducts.prepend(newParentDiv);
+
+    })
+
+  };
+
+
+  const cloneParentDiv = (productId) => {
+    // Select the div with id "parentDivTemplate"
+    const parentDivTemplate = document.getElementById('parentDivTemplate');
+
+    if (parentDivTemplate) {
+      // Clone the div
+      const clonedDiv = parentDivTemplate.cloneNode(true);
+
+      // Remove all attributes except the class attribute
+      clonedDiv.removeAttribute('id');
+      clonedDiv.removeAttribute('style');
+
+      // add the item product id
+      clonedDiv.setAttribute('data-product-id', productId); // This will replace all previous classes with 'parentDiv'
+
+      // Add the new class "parentDiv"
+      clonedDiv.className = 'parentDiv'; // This will replace all previous classes with 'parentDiv'
+
+      // remove related product div
+      const divToRemove = clonedDiv.querySelector('.recommendedProduct');
+      
+      if(divToRemove) {
+        divToRemove.remove();        
+      }
+
+
+      // // Append the cloned div to the desired container (e.g., body or a specific section)
+      // document.getElementById('recommendedProducts').appendChild(clonedDiv);
+
+      return clonedDiv; // Optionally, return the cloned div if needed
+
+    } else {
+      console.error('Element with id "parentDivTemplate" not found.');
+    }
+  };
+
+  const generateCartForm = (product) => {
+    // Create the main form container
+    const cartForm = document.createElement('div');
+    cartForm.classList.add('cartForm');
+
+    // Create the options container
+    const optionsContainer = document.createElement('div');
+    optionsContainer.classList.add('optionsContainer');
+
+    // Add hidden input for product ID
+    const input = document.createElement('input');
+    input.name = 'productId';
+    input.type = 'hidden';
+    input.value = product.id;
+
+    optionsContainer.appendChild(input);
+
+    // Loop over product options (e.g., Color, Size)
+    product.options.forEach((option, optionIndex) => {
+      const uniqueOptionValues = [];
+
+      // Loop through variants to gather option values
+      product.variants.forEach(({ options }) => {
+        const optionValue = options[optionIndex];
+        if (optionValue && !uniqueOptionValues.includes(optionValue)) {
+          uniqueOptionValues.push(optionValue);
+        }
+      });
+
+      if (uniqueOptionValues.length > 1 && uniqueOptionValues.length <= 3) {
+        const select = document.createElement('select');
+        select.name = `options[${option.name}]`;
+        select.id = `product-option-${optionIndex + 1}`;
+        select.dataset.product = JSON.stringify(product);
+
+        // Onchange handler
+        select.addEventListener('change', (event) => handleSelectChange(event, select.closest('.detailsDiv')));
+
+        uniqueOptionValues.forEach((value, valueIndex) => {
+          if (value != '') {
+            const optionElement = document.createElement('option');
+            optionElement.value = value;
+            if (valueIndex == 0) {
+              optionElement.setAttribute('selected', 'selected');
+            }
+            optionElement.textContent = value;
+            select.appendChild(optionElement);
+          }
+        });
+
+        optionsContainer.appendChild(select);
+      }
+    });
+
+    // document.querySelectorAll('select').forEach(selectElement => {
+    //   const firstOption = selectElement.querySelector('option');
+    //   if (firstOption) {
+    //     firstOption.setAttribute('selected', 'selected');
+    //     console.log('firstOption:', firstOption);
+    //   }
+
+    // });
+
+
+    // Append the options container to the cart form
+    cartForm.appendChild(optionsContainer);
+
+    // Add to Cart Button (Outside of the loop)
+    const addButton = document.createElement('button');
+    addButton.classList.add('addRecommendedProduct');
+    addButton.dataset.product = JSON.stringify(product);
+
+    // Onclick handler
+    addButton.addEventListener('click', (event) => {
+      ATCButton(event, addButton.closest('.detailsDiv'), addButton.closest('#complementaryProducts'));
+    });
+
+    addButton.textContent = 'Add to Cart';
+    cartForm.appendChild(addButton);
+
+    // Ensure cartForm is appended to the DOM
+    const container = document.querySelector('.detailsDiv');
+    if (container) {
+      container.appendChild(cartForm);
+    } else {
+      console.error('Container element not found');
+    }
+
+    return cartForm;
+  };
+
+  const handleSelectChange = (event, detailsDivElement) => {
+
+    const optionElement = event.target;
+    const updatedSelectionElement = addSelectedAttribute(optionElement);
+
+    replaceChildElement(detailsDivElement, updatedSelectionElement);
+
+    const productJson = event.target.getAttribute('data-product');
+
+    const product = JSON.parse(decodeURIComponent(productJson));
+
+    const variantId = selectedVariantId(detailsDivElement, product);
+
+    if (variantId) {
+      product.variants.forEach(variant => {
+        if (variant.id == variantId) {
+          const complementaryProductElement = event.target.closest('.recommendedProduct');
+          
+          if (variant.featured_image && variant.featured_image.src) {
+            complementaryProductElement
+              .querySelector('.compThumbnail img')
+              .setAttribute('src', variant.featured_image.src);
+          }
+
+          if (variant.compare_at_price) {
+            complementaryProductElement
+              .querySelector('.variantComparePrice').style.display = '';
+            complementaryProductElement
+              .querySelector('.variantComparePrice').innerHTML = formatMoney(variant.compare_at_price, "{{ shop.money_format }}");    
+          } else {
+            complementaryProductElement
+              .querySelector('.variantComparePrice').style.display = 'none';
+            complementaryProductElement
+              .querySelector('.variantComparePrice').innerHTML = '';
+          }
+
+          complementaryProductElement
+            .querySelector('.variantPrice').innerHTML = formatMoney(variant.price, "{{ shop.money_format }}");
+        }
+      });
+    }
+  };
+
+  // Function to add 'selected' attribute to selected option
+  const addSelectedAttribute = (detailsDivElement) => {
+    // Remove 'selected' attribute from all options
+    Array.from(detailsDivElement.options).forEach(option => {
+      option.removeAttribute('selected');
+    });
+
+    // Add 'selected' attribute to the selected option
+    detailsDivElement.options[detailsDivElement.selectedIndex].setAttribute('selected', '');
+
+    // Return the updated detailsDivElement
+    return detailsDivElement;
+  };
+
+  const replaceChildElement = (detailsDivElement, updatedElement) => {
+    // Find the existing element with the same name attribute as the updatedElement
+    const existingElement = detailsDivElement.querySelector(`[name="${updatedElement.name}"]`);
+
+    if (existingElement) {
+      // Replace the existing element with the updated element
+      existingElement.parentNode.replaceChild(updatedElement, existingElement);
+    }
+  };
+
+  const selectedVariantId = (detailsDivElement, product) => {
+
+    const selectElements = detailsDivElement.querySelectorAll('select');
+
+    if(selectElements.length == 0) {
+      return null;
+    }
+
+    const optionsArr = [];
+
+    selectElements.forEach((element) => {
+
+      const options = element.querySelectorAll('option');
+
+      options.forEach((option) => {
+        if(option.hasAttribute('selected')) {
+          const selectedOption = option.value;
+          optionsArr.push(selectedOption);
+        }
+      })
+    });
+
+    let variantId = 'initialValue';
+
+    product.variants.forEach(async (variant) => {
+      // Check if variant.options is equal to optionsArr
+      if (Array.isArray(variant.options) && Array.isArray(optionsArr) && 
+        variant.options.length == optionsArr.length &&
+        variant.options.every((option, index) => option == optionsArr[index])) {
+        variantId = variant.id;
+      }
+    });
+
+    return variantId;
+  };
+
+  // handle add to cart button onclick
+  async function ATCButton(event, detailsDivElement, numberOfATCButtons) {
+    event.preventDefault();
+
+    const button = event.target;
+    console.log('atcButton event.target:', button);
+    const productJson = button.getAttribute('data-product');
+    const product = JSON.parse(decodeURIComponent(productJson));
+
+    let variantId = '';
+
+    variantId = selectedVariantId(detailsDivElement, product);
+
+    console.log('atcbutton variantId:', variantId);
+
+    if(!variantId) {
+      if(product) {
+        variantId = product.variants[0].id;
+        await addRecProduct(event, variantId);
+        return;
+      }
+    }
+
+    variantId = selectedVariantId(detailsDivElement, product);
+
+    console.log({variantId});
+
+    await addRecProduct(event, variantId);
+
+  }
+
+  const addRecProduct = async (event, variantId) => {
+    try {
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: 1,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Product added to cart - Variant Id:', data.variant_id);
+        await refreshCart(event);
+      } else {
+        const errorText = await response.text();
+        console.error('Failed to add product to cart:', response.statusText, errorText);
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  }
+
+  const refreshCart = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('/?section_id=cart-drawer');
+
+      if(!response.ok) {
+        const errorText = await response.text();
+        console.error('Failed to refresh cart:', response.statusText, errorText);
+        return;
+      }
+
+      const data = await response.text();
+      const parser = new DOMParser();
+      const htmlDocument = parser.parseFromString(data, 'text/html');
+      
+      const toReplace = document.querySelector('#CartDrawer');
+      const replaceWith = htmlDocument.querySelector('#CartDrawer');
+
+      // update cart drawer
+      toReplace.innerHTML = replaceWith.innerHTML;
+
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  };
+
+</script>
+
+{% comment %} slider script {% endcomment %}
+<script>
+
+  const handleSliderButtons = (button, retryCount = 0) => {
+
+    if (!button) {
+      console.error('Button element not found.');
+      return;
+    }
+
+    // Disable the button at the start of the animation
+    button.disabled = true;
+
+    const offset = button.dataset.sliderButton == 'next' ? 1 : -1;
+    const container = button.closest('.recommendedContainer');
+
+    if (!container) {
+      console.error('Container element .recommendedContainer not found.');
+      button.disabled = false;
+      return;
+    }
+
+    const slides = container.querySelectorAll('.recommendedProduct');
+    if (slides.length == 0) {
+      console.error('No slides found.');
+      button.disabled = false;
+      return;
+    }
+
+    const activeSlide = [...slides].find(slide => slide.hasAttribute('data-active') || slide.hasAttribute('data-active-in') || slide.hasAttribute('data-active-in-reverse'));
+
+    // If no active slide is found, retry after a short delay
+    const maxRetries = 3;
+
+    if (!activeSlide) {
+      if (retryCount < maxRetries) {
+        console.warn(`No active slide found. Retrying... (${retryCount + 1})`);
+
+        setTimeout(() => {
+          handleSliderButtons(button, retryCount + 1);
+        }, 200);  // Retry after 200ms
+        return;
+      } else {
+        console.error("Max retries reached. No active slide found.");
+        button.disabled = false;  // Re-enable the button if retries fail
+        return;
+      }
+    }
+
+    let newIndex = [...slides].indexOf(activeSlide) + offset;
+
+    // if there's only one slide, then disable prev and next buttons
+    if (slides.length < 2) {
+      const prevButton = document.getElementById('sliderButtonPrev');
+      const nextButton = document.getElementById('sliderButtonNext');
+      
+      if (prevButton) prevButton.setAttribute('disabled', true);
+      if (nextButton) nextButton.setAttribute('disabled', true);
+    }
+
+    if (newIndex < 0) {
+      newIndex = slides.length - 1;
+    }
+
+    if(newIndex >= slides.length) {
+      newIndex = 0;
+    }
+
+    // remove data-active attribute for either direction
+    if(activeSlide) {
+      if (activeSlide.hasAttribute('data-active')) {
+        activeSlide.removeAttribute('data-active');
+      }      
+    }
+
+
+    // next button login
+    if(offset == 1) {
+
+      const attributeToRemove = ['data-active-in-reverse', 'data-active-out-reverse'];
+
+      // remove any reverse attributes
+      attributeToRemove.forEach((attr) => {
+        if (activeSlide.hasAttribute(attr)) {
+          activeSlide.removeAttribute(attr);
+        }
+
+        if (slides[newIndex].hasAttribute(attr)) {
+          slides[newIndex].removeAttribute(attr);
+        }
+      });
+
+      if(activeSlide.hasAttribute('data-active-in')) {
+        activeSlide.removeAttribute('data-active-in');
+      }
+
+      activeSlide.setAttribute('data-active-out', '');
+
+      if(slides[newIndex].hasAttribute('data-active-out')){
+        slides[newIndex].removeAttribute('data-active-out');
+      }
+
+      slides[newIndex].setAttribute('data-active-in', '');     
+
+    }
+
+    else {
+
+      // previous button logic
+
+      const attriubutesToRemove = ['data-active-in', 'data-active-out'];
+
+      // remove any reverse attributes
+      attriubutesToRemove.forEach((attr) => {
+        
+        if(activeSlide.hasAttribute(attr)) {
+          activeSlide.removeAttribute(attr);
+        } 
+
+        if(slides[newIndex].hasAttribute(attr)) {
+          slides[newIndex].removeAttribute(attr);
+        }
+
+      })
+
+      if (activeSlide.hasAttribute('data-active-in-reverse')) {
+        activeSlide.removeAttribute('data-active-in-reverse');
+      }
+
+      activeSlide.setAttribute('data-active-out-reverse', '');
+
+      if (slides[newIndex].hasAttribute('data-active-out-reverse')) {
+        slides[newIndex].removeAttribute('data-active-out-reverse');
+      }
+
+      slides[newIndex].setAttribute('data-active-in-reverse', '');
+
+    }
+
+    // Re-enable the button after the animation completes
+    setTimeout(() => {
+      button.disabled = false;
+    }, 500); // 500ms is the duration of the animation
+
+  }
+
+  const handleSimulatedSliderButtons = (button) => {
+    const sliderButtonType = button.dataset.sliderButton;
+    
+    // Find the corresponding hidden slider button
+    const hiddenButton = document.querySelector(`#recProductsMain .sliderButton.${sliderButtonType}[style*='display: none']`);
+    
+    if (hiddenButton) {
+      hiddenButton.click(); // Simulate a click on the hidden button
+    }
+    else {
+      console.log('no hiddenButton');
+    }
+  };
+
+</script>
+
+{% comment %} shopify format money for JS {% endcomment %}
+<script>
+  function formatMoney(cents, format) {
+    if (typeof cents == 'string') { cents = cents.replace('.',''); }
+    var value = '';
+    var placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+    var formatString = (format || this.money_format);
+
+    function defaultOption(opt, def) {
+      return (typeof opt == 'undefined' ? def : opt);
+    }
+
+    function formatWithDelimiters(number, precision, thousands, decimal) {
+      precision = defaultOption(precision, 2);
+      thousands = defaultOption(thousands, ',');
+      decimal   = defaultOption(decimal, '.');
+
+      if (isNaN(number) || number == null) { return 0; }
+
+      number = (number/100.0).toFixed(precision);
+
+      var parts   = number.split('.'),
+          dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+          cents   = parts[1] ? (decimal + parts[1]) : '';
+
+      return dollars + cents;
+    }
+
+    switch(formatString.match(placeholderRegex)[1]) {
+      case 'amount':
+        value = formatWithDelimiters(cents, 2);
+        break;
+      case 'amount_no_decimals':
+        value = formatWithDelimiters(cents, 0);
+        break;
+      case 'amount_with_comma_separator':
+        value = formatWithDelimiters(cents, 2, '.', ',');
+        break;
+      case 'amount_no_decimals_with_comma_separator':
+        value = formatWithDelimiters(cents, 0, '.', ',');
+        break;
+    }
+
+    return formatString.replace(placeholderRegex, value);
+  };
+</script>
+
+{% comment %} Function to sanitize JSON data {% endcomment %}
+<script>
+  const sanitizeJson = (jsonString) => 
+    jsonString
+      .replace(/\\/g, '\\\\')  // Escape backslashes
+      .replace(/"/g, '\\"')    // Escape double quotes
+      .replace(/\n/g, '');     // Remove newlines (if necessary)
+
+  // Function to parse JSON safely with error handling
+  const parseJsonSafely = (jsonString) => {
+    try {
+      return JSON.parse(jsonString);
+    } catch (error) {
+      console.error('Error parsing JSON:', error.message);
+      if (error.message.includes('Unexpected token')) {
+        // Attempt to sanitize and parse again
+        const sanitizedJson = sanitizeJson(jsonString);
+        try {
+          return JSON.parse(sanitizedJson);
+        } catch (sanitizedError) {
+          console.error('Error parsing sanitized JSON:', sanitizedError.message);
+          return null;  // Return null if parsing fails after sanitization
+        }
+      }
+      return null;  // Return null if parsing fails and no specific handling is applied
+    }
+  };
+</script>
+
+
+
+{% schema %}
+{
+  "name": "Cart Drawer",
+  "settings": [
+    {
+      "type": "select",
+      "id": "enable_recommended",
+      "label": "Enable Recommended Products",
+      "options": [
+        {
+          "value": "false",
+          "label": "No"
+        },
+        {
+          "value": "true",
+          "label": "Complementary Products Only"
+        },
+        {
+          "value": "both",
+          "label": "Complementary and Related Products"
+        }
+      ],
+      "default": "false",
+      "info": "When option 3 is selected, if there are no complementary products, related products will show instead"
+    }
+
+  ]
+}
+{% endschema %}
