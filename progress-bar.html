@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Optimized Circular Progress Bar</title>
+  <style>
+    .progress-text {
+      font-size: 18px;
+      font-weight: bold;
+      text-anchor: middle;
+      alignment-baseline: middle;
+      fill: #333;
+    }
+
+    .circle-background {
+      fill: none;
+      stroke: #e6e6e6;
+      stroke-width: 10;
+    }
+
+    .circle-progress {
+      fill: none;
+      stroke-width: 10;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.6s ease-out;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-container" data-progress="70">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <circle class="circle-background" cx="60" cy="60" r="50"></circle>
+      <circle class="circle-progress" cx="60" cy="60" r="50" stroke="#4caf50" stroke-dasharray="314.159"
+        stroke-dashoffset="0"></circle>
+      <text class="progress-text" x="60" y="60">0%</text>
+    </svg>
+  </div>
+
+  <script>
+    function updateProgressBar(progressElement) {
+      const progressValue = parseInt(progressElement.dataset.progress, 10);
+      const circleProgress = progressElement.querySelector('.circle-progress');
+      const progressText = progressElement.querySelector('.progress-text');
+      const radius = 50;
+      const circumference = 2 * Math.PI * radius;
+      const offset = circumference - (progressValue / 100) * circumference;
+
+      circleProgress.style.strokeDashoffset = offset;
+      progressText.textContent = `${progressValue}%`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const progressElements = document.querySelectorAll('.progress-container');
+      progressElements.forEach(updateProgressBar);
+    });
+  </script>
+
+</body>
+
+</html>
