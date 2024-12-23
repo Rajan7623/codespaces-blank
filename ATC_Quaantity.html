@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Quantity</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    .product-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      width: 300px;
+      margin: 0 auto 20px;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    .action-area {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .btn-primary {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-primary:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .bundle_quantity_controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .bundle_quantity_controls button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .bundle_quantity_controls button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* Chrome, Safari, Edge, Opera */
+    .bundle_quantity_controls input::-webkit-outer-spin-button,
+    .bundle_quantity_controls input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    .bundle_quantity_controls input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    .bundle_quantity_controls input {
+      width: 60px;
+      text-align: center;
+      font-size: 18px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      transition: border-color 0.3s ease;
+    }
+
+    .bundle_quantity_controls input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="products">
+    <div class="product-card" data-product-id="1">
+      <h2>Product 1</h2>
+      <p>Price: $50</p>
+      <div class="action-area">
+        <button class="btn-primary bundle_add_to_cart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const productsContainer = document.getElementById("products");
+
+      // Delegate events for all buttons and inputs
+      productsContainer.addEventListener("click", (event) => {
+        const target = event.target;
+        const productCard = target.closest(".product-card");
+        const actionArea = productCard.querySelector(".action-area");
+
+        if (target.classList.contains("bundle_add_to_cart")) {
+          renderQuantityControls(actionArea);
+        } else if (target.classList.contains("bundle_decrease_qty_btn")) {
+          updateQuantity(actionArea, -1);
+        } else if (target.classList.contains("bundle_increase_qty_btn")) {
+          updateQuantity(actionArea, 1);
+        }
+      });
+
+      productsContainer.addEventListener("input", (event) => {
+        if (event.target.classList.contains("bundle_quantity_input")) {
+          const quantityInput = event.target;
+          const actionArea = quantityInput.closest(".action-area");
+          validateAndApplyQuantity(actionArea, quantityInput);
+        }
+      });
+
+      function renderQuantityControls(actionArea) {
+        actionArea.innerHTML = `
+          <div class="bundle_quantity_controls">
+            <button class="bundle_decrease_qty_btn btn">-</button>
+            <input type="number" class="bundle_quantity_input" min="0" max="10" value="1">
+            <button class="bundle_increase_qty_btn btn">+</button>
+          </div>
+        `;
+      }
+
+      function updateQuantity(actionArea, change) {
+        const quantityInput = actionArea.querySelector(".bundle_quantity_input");
+        const currentQuantity = parseInt(quantityInput.value) || 0;
+        const min = parseInt(quantityInput.min);
+        const max = parseInt(quantityInput.max);
+        const newQuantity = Math.min(Math.max(currentQuantity + change, min), max);
+
+        quantityInput.value = newQuantity;
+
+        if (newQuantity === 0) {
+          actionArea.innerHTML = `<button class="btn-primary bundle_add_to_cart">Add to Cart</button>`;
+        }
+      }
+
+      function validateAndApplyQuantity(actionArea, input) {
+        const min = parseInt(input.min);
+        const max = parseInt(input.max);
+        let value = parseInt(input.value) || 0;
+
+        // Clamp the input value within min and max range
+        value = Math.min(Math.max(value, min), max);
+        input.value = value;
+
+        if (value === 0) {
+          actionArea.innerHTML = `<button class="btn-primary bundle_add_to_cart">Add to Cart</button>`;
+        }
+      }
+    });
+  </script>
+
+</body>
+
+</html>
