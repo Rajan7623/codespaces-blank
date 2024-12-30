@@ -38,7 +38,7 @@
       placeholderItems.appendChild(newItem);
     }
 
-    function getCheckedInputValue() {
+    function getCheckedInputValue() { 
       const checkedInput = bundleInputsWrapper.querySelector('input[type="radio"]:checked');
       return checkedInput ? parseInt(checkedInput.value, 10) : 0;
     }
@@ -47,7 +47,6 @@
       const placeholderItems = input.closest('.bundle_builder_block_container').querySelector('.bundle_placeholder_items');
       const maxProducts = parseInt(input.value, 10);
 
-      // Add or remove placeholders to match input value
       while (placeholderItems.childElementCount > maxProducts) {
         placeholderItems.removeChild(placeholderItems.lastElementChild);
         removeExcessSelectedProducts(maxProducts);
@@ -64,7 +63,7 @@
       while (selectedProducts.length > maxProducts) {
         const productIndex = selectedProducts.pop();
         const button = bundleBtns[productIndex];
-        button.disabled = false;
+        button.disabled = true;
         button.textContent = 'Add';
         button.classList.remove('bundle_prd_added_to_cart');
         bundleProductCount--;
@@ -168,10 +167,10 @@
     });
 
     // Initialize
-    const initialInput = bundleInputsWrapper.querySelector('input[type="radio"]:checked');
+    const initialInput = getCheckedInputValue();
     if (initialInput) {
       updatePlaceholderItems(initialInput);
       handleProductPrice(initialInput);
-      updateCheckoutButton(getCheckedInputValue());
+      updateCheckoutButton(initialInput);
     }
   });
