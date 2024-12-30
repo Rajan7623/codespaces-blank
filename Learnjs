@@ -1,4 +1,4 @@
- document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const closeIcon = `<img src="https://cdn.shopify.com/s/files/1/0182/8937/files/cross_icon_84f5b2e6-d9bb-4c30-b668-6fb4d92a65d7.png" width="16" height="16" class="prd_close_icon"/>`;
     let bundleProductCount = 0;
     const selectedProducts = [];
@@ -44,7 +44,7 @@
     }
 
     function updatePlaceholderItems(input) {
-      const placeholderItems = input.closest('.bundle_builder_block_container').querySelector('.bundle_placeholder_items');
+      const placeholderItems = document.querySelector('.bundle_placeholder_items');
       const maxProducts = parseInt(input.value, 10);
 
       while (placeholderItems.childElementCount > maxProducts) {
@@ -129,6 +129,7 @@
     }
 
     function handleProductPrice(input) {
+      
       bundleComparePrice.textContent = input.dataset.blockComparePrice || '0';
       bundleActualPrice.textContent = input.dataset.blockActualPrice || '0';
     }
@@ -167,7 +168,7 @@
     });
 
     // Initialize
-    const initialInput = getCheckedInputValue();
+    const initialInput = bundleInputsWrapper.querySelector('input[type="radio"]:checked');
     if (initialInput) {
       updatePlaceholderItems(initialInput);
       handleProductPrice(initialInput);
