@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .modal_main_wrapper {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.11);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .modal_main_wrapper.modal_active {
+      display: block;
+    }
+
+    .modal_inner_conatiner {
+      background-color: #fefefe;
+      margin: 80px auto;
+      padding: 20px;
+      border: 1px solid #888;
+      max-width: 80%;
+      height: 600px;
+      border-radius: 41px;
+      box-shadow: 6px 7px 20px 0px rgba(33, 33, 33, 0.35);
+      animation: slideIn 0.4s ease-in-out;
+    }
+
+    .modal_main_wrapper:not(.modal_active) .modal_inner_conatiner {
+      animation: slideOut 0.8s ease-in-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOut {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      to {
+        transform: translateY(+50%);
+        opacity: 0;
+      }
+    }
+
+    .ctm-close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .ctm-close:hover,
+    .ctm-close:focus {
+      color: #000;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <!-- Trigger/Open The Modal -->
+  <button class="modal_enabler_btn" data-model-enabler>
+    Members Sign In
+  </button>
+
+  <!-- The Modal -->
+  <div class="modal_main_wrapper" data-modal-wrapper-main>
+    <div class="modal_inner_conatiner">
+      <span class="ctm-close" data-close-modal>&times;</span>
+      <p>Some text in the Modal..</p>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll("[data-model-enabler], [data-close-modal]").forEach(el =>
+      el.addEventListener("click", () =>
+        document.querySelector("[data-modal-wrapper-main]").classList.toggle("modal_active")
+      )
+    );
+
+    document.querySelector("[data-modal-wrapper-main]").addEventListener("click", (e) =>
+      e.target === e.currentTarget && e.currentTarget.classList.remove("modal_active")
+    );
+  </script>
+
+</body>
+
+</html>
