@@ -1,0 +1,15 @@
+Generate a JSON object with all possible combinations of the following inputs:
+
+Input Name Polos = values [Pique, Long Sleeve, Rugby]  
+Input Name Bottom = values [Chinos, Cargo Pants, Utility Pants, Joggers]  
+Input Name Jacket = values [Casual, Denim, Leather]  
+
+Each key in the JSON should be formatted as:  
+"Polos-Bottom-Jacket": "Style"
+
+Assign the following styles cyclically:  
+- Traditional  
+- Modern  
+- Classy  
+
+Ensure that the order of combinations follows a structured matrix format.
